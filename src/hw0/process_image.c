@@ -19,6 +19,7 @@ image copy_image(image im)
 {
     image copy = make_image(im.w, im.h, im.c);
     // TODO Fill this in
+    memcpy(copy.data, im.data, im.w * im.h * im.c * sizeof(float));
     return copy;
 }
 
@@ -27,6 +28,10 @@ image rgb_to_grayscale(image im)
     assert(im.c == 3);
     image gray = make_image(im.w, im.h, 1);
     // TODO Fill this in
+    int area = im.w * im.h;
+    for (int i = 0; i < area; i++) {
+        *(gray.data + i) = (0.299 * (*(im.data + i))) + (0.587 * (*(im.data + i + area))) + (0.114 * (*(im.data + i + (2 * area))));
+    }
     return gray;
 }
 
