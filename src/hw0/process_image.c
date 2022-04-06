@@ -56,11 +56,29 @@ image rgb_to_grayscale(image im)
 void shift_image(image im, int c, float v)
 {
     // TODO Fill this in
+    for(int x = 0; x < im.w; x++) {
+        for(int y = 0; y < im.h; y++) {
+            float newVal = get_pixel(im, x, y, c) + v;
+            set_pixel(im, x, y, c, newVal);     
+        }
+    }
 }
 
 void clamp_image(image im)
 {
     // TODO Fill this in
+    for(int x = 0; x < im.w; x++) {
+        for(int y = 0; y < im.h; y++) {
+            for(int c = 0; c < im.c; c++) {
+                float pixelVal = get_pixel(im, x, y, c);
+                if (pixelVal < 0) {
+                    set_pixel(im, x, y, c, 0);
+                } else if (pixelVal > 1) {
+                    set_pixel(im, x, y, c, 1);
+                }
+            }
+        }
+    }
 }
 
 
