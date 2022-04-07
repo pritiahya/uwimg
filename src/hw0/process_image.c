@@ -18,7 +18,7 @@ float get_pixel(image im, int x, int y, int c)
     } else if (y >= im.h) {
         y = im.h -1;
     }
-    
+
     int index = x + (y * im.w) + (c * im.w * im.h);
     return im.data[index];
 ;
@@ -59,7 +59,7 @@ void shift_image(image im, int c, float v)
     for(int x = 0; x < im.w; x++) {
         for(int y = 0; y < im.h; y++) {
             float newVal = get_pixel(im, x, y, c) + v;
-            set_pixel(im, x, y, c, newVal);     
+            set_pixel(im, x, y, c, newVal);
         }
     }
 }
@@ -96,6 +96,52 @@ float three_way_min(float a, float b, float c)
 void rgb_to_hsv(image im)
 {
     // TODO Fill this in
+    int area = im.w * im.h;
+
+    for (int i = 0; i < area; i++) {
+        float val;
+        float sat;
+        float hue;
+        float r = *(im.data + i);
+        float g = *(im.data + i + area);
+        float b = *(im.data + i + (2 * area));
+
+        // calculate Value
+        val = three_way_max(r, g, b);
+
+        // calculate Saturation
+        float c = 0;
+        if (r == 0 && g == 0 && b == 0) {
+            sat = 0;
+        } else {
+            float min = three_way_min(r, g, b);
+            c = val - min;
+            sat = c / val;
+        }
+
+        // calculate Hue
+        float h = 0;
+        if (c == 0) {
+            hue = 0;
+        } else if (val == r) {  // V = R
+            h = (g - b) / c;
+        } else if (val == g) {  // V = G
+            h = ((b - r) / c) + 2;
+        } else if (val == b) {  // V = B
+            h = ((r - g) / c) + 4;
+        }
+        if (c != 0) {
+            if (h < 0) {
+                hue = (h / 6) + 1;
+            } else {
+                hue = h / 6;
+            }
+        }
+
+        im.data[i] = hue;
+        im.data[i + area] = sat;
+        im.data[i + (2 * area)] = val;
+    }
 }
 
 void hsv_to_rgb(image im)
