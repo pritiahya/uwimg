@@ -155,7 +155,7 @@ void hsv_to_rgb(image im)
         float val = im.data[i + (2 * area)];
 
         float c = val * sat;
-        float m = val - c;
+        float m = val - (val * sat);
         float h = hue * 6;
         float r = 0;
         float g = 0;
@@ -181,10 +181,10 @@ void hsv_to_rgb(image im)
             r = m + (c * (h - 4));
             g = m;
             b = val;
-        } else if (h >= 5 && h < 6) {   // V = R, H' negative
+        } else if (h >= 5 && h <= 6) {   // V = R, H' negative
             r = val;
             g = m;
-            b = m - (c * h);
+            b = m - (c * (h - 6));
         }
 
         im.data[i] = r;
@@ -194,7 +194,7 @@ void hsv_to_rgb(image im)
 }
 
 // extra credit
-void scale_image(image im, int c, float v) 
+void scale_image(image im, int c, float v)
 {
     for(int x = 0; x < im.w; x++) {
         for(int y = 0; y < im.h; y++) {
