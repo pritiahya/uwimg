@@ -14,18 +14,25 @@ image nn_resize(image im, int w, int h)
 {
     // TODO Fill in (also fix that first line)
     image ret = make_image(w, h, im.c);
+
+    // solve equations for a and b
     float a_x = (float)im.w / (float)w;
     float a_y = (float)im.h / (float)h;
     float b_x = (float)(-0.5) - (float)(a_x * (-0.5));
     float b_y = (float)(-0.5) - (float)(a_y * (-0.5));
-    for (int c = 0; c < im.c; c++){
-      for (int y = 0; y < h; y++){
-        for (int x = 0; x < w; x++){
-            float map_x = (float)(a_x * x) + b_x;
-            float map_y = (float)(a_y * y) + b_y;
-          set_pixel(ret, x, y, c, nn_interpolate(im, map_x, map_y, c));
+
+    // loop over pixels
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                // map back to old coordinates
+                float map_x = (float)(a_x * x) + b_x;
+                float map_y = (float)(a_y * y) + b_y;
+
+                // fill pixel
+                set_pixel(ret, x, y, c, nn_interpolate(im, map_x, map_y, c));
+            }
         }
-      }
     }
     return ret;
 }
@@ -58,18 +65,25 @@ image bilinear_resize(image im, int w, int h)
 {
     // TODO
     image ret = make_image(w, h, im.c);
+
+    // solve equations for a and b
     float a_x = (float)im.w / (float)w;
     float a_y = (float)im.h / (float)h;
     float b_x = (float)(-0.5) - (float)(a_x * (-0.5));
     float b_y = (float)(-0.5) - (float)(a_y * (-0.5));
-    for (int c = 0; c < im.c; c++){
-      for (int y = 0; y < h; y++){
-        for (int x = 0; x < w; x++){
-            float map_x = (float)(a_x * x) + b_x;
-            float map_y = (float)(a_y * y) + b_y;
-          set_pixel(ret, x, y, c, bilinear_interpolate(im, map_x, map_y, c));
+
+    // loop over pixels
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                // map back to old coordinates
+                float map_x = (float)(a_x * x) + b_x;
+                float map_y = (float)(a_y * y) + b_y;
+
+                // fill pixel
+                set_pixel(ret, x, y, c, bilinear_interpolate(im, map_x, map_y, c));
+            }
         }
-      }
     }
     return ret;
 }
