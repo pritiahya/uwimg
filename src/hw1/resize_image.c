@@ -4,13 +4,14 @@
 float nn_interpolate(image im, float x, float y, int c)
 {
     // TODO Fill in
-    return 0;
+    int x2 = round(x);
+    int y2 = round(y);
+    return get_pixel(im, x2, y2, c);
 }
 
 image nn_resize(image im, int w, int h)
 {
     // TODO Fill in (also fix that first line)
-    return make_image(1,1,1);
 }
 
 float bilinear_interpolate(image im, float x, float y, int c)
