@@ -9,12 +9,27 @@
 void l1_normalize(image im)
 {
     // TODO
+    int nm = im.w * im.h;
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < im.h; y++) {
+            for (int x = 0; x < im.w; x++) {
+                set_pixel(im, x, y, c, get_pixel(im, x, y, c) / nm);
+            }
+        }
+    }
 }
 
 image make_box_filter(int w)
 {
     // TODO
-    return make_image(1,1,1);
+    image new = make_image(w, w, 1);
+    int val = 1 / (w * w);
+    for (int y = 0; y < w; y++) {
+        for (int x = 0; x < w; x++) {
+            set_pixel(new, x, y, 1, val);
+        }
+    }
+    return new;
 }
 
 image convolve_image(image im, image filter, int preserve)
