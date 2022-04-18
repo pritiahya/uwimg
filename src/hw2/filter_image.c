@@ -41,7 +41,17 @@ image convolve_image(image im, image filter, int preserve)
 image make_highpass_filter()
 {
     // TODO
-    return make_image(1,1,1);
+    image ret = make_image(3, 3, 1);
+    set_pixel(ret, 0, 0, 0, 0);
+    set_pixel(ret, 0, 1, 0, -1);
+    set_pixel(ret, 0, 2, 0, 0);
+    set_pixel(ret, 1, 0, 0, -1);
+    set_pixel(ret, 1, 1, 0, 4);
+    set_pixel(ret, 1, 2, 0, -1);
+    set_pixel(ret, 2, 0, 0, 0);
+    set_pixel(ret, 2, 1, 0, -1);
+    set_pixel(ret, 2, 2, 0, 0);
+    return ret;
 }
 
 image make_sharpen_filter()
