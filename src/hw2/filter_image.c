@@ -25,11 +25,11 @@ image make_box_filter(int w)
     // TODO: Fix calculation for value
     image new = make_image(w, w, 1);
     float val = 1.0 / (w * w);
-    printf("%f", val);
+    printf("value = %f\n", val);
     for (int y = 0; y < w; y++) {
         for (int x = 0; x < w; x++) {
             set_pixel(new, x, y, 1, val);
-            printf("%f", get_pixel(new, x, y, 1));
+            printf("%f   ", get_pixel(new, x, y, 1));
         }
     }
     return new;
