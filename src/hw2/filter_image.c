@@ -266,6 +266,33 @@ image make_gy_filter()
 void feature_normalize(image im)
 {
     // TODO
+    float min = 0;
+    float max = 0;
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < im.h; y++) {
+            for (int x = 0; x < im.w; x++) {
+                float pix = get_pixel(im, x, y, c);
+                min = MIN(pix, min);
+                max = MAX(pix, max);
+            }
+        }
+    }
+
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < im.h; y++) {
+            for (int x = 0; x < im.w; x++) {
+                float r = max - min;
+                if(max - min == 0) {
+                    set_pixel(im, x, y, c, 0);
+                } else {
+                    float newVal = (float)(get_pixel(im, x, y, c) - min) / r;
+                    set_pixel(im, x, y, c, newVal);
+                }
+            }
+        }
+    }
+
+
 }
 
 image *sobel_image(image im)
