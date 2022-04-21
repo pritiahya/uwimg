@@ -9,11 +9,29 @@
 void l1_normalize(image im)
 {
     // TODO
-    int nm = im.w * im.h;
+    /*int nm = im.w * im.h;
     for (int c = 0; c < im.c; c++) {
         for (int y = 0; y < im.h; y++) {
             for (int x = 0; x < im.w; x++) {
                 set_pixel(im, x, y, c, get_pixel(im, x, y, c) / nm);
+            }
+        }
+    }*/
+
+
+
+    float sum = 0;
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < im.h; y++) {
+            for (int x = 0; x < im.w; x++) {
+                sum +=get_pixel(im, x, y, c);
+            }
+        }
+    }
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < im.h; y++) {
+            for (int x = 0; x < im.w; x++) {
+                set_pixel(im, x, y, c, get_pixel(im, x, y, c) / sum);
             }
         }
     }
@@ -148,13 +166,33 @@ image make_highpass_filter()
 image make_sharpen_filter()
 {
     // TODO
-    return make_image(1,1,1);
+    image ret = make_image(3, 3, 1);
+    set_pixel(ret, 0, 0, 0, 0);
+    set_pixel(ret, 0, 1, 0, -1);
+    set_pixel(ret, 0, 2, 0, 0);
+    set_pixel(ret, 1, 0, 0, -1);
+    set_pixel(ret, 1, 1, 0, 5);
+    set_pixel(ret, 1, 2, 0, -1);
+    set_pixel(ret, 2, 0, 0, 0);
+    set_pixel(ret, 2, 1, 0, -1);
+    set_pixel(ret, 2, 2, 0, 0);
+    return ret;
 }
 
 image make_emboss_filter()
 {
     // TODO
-    return make_image(1,1,1);
+    image ret = make_image(3, 3, 1);
+    set_pixel(ret, 0, 0, 0, -2);
+    set_pixel(ret, 0, 1, 0, -1);
+    set_pixel(ret, 0, 2, 0, 0);
+    set_pixel(ret, 1, 0, 0, -1);
+    set_pixel(ret, 1, 1, 0, 1);
+    set_pixel(ret, 1, 2, 0, 1);
+    set_pixel(ret, 2, 0, 0, 0);
+    set_pixel(ret, 2, 1, 0, 1);
+    set_pixel(ret, 2, 2, 0, 2);
+    return ret;
 }
 
 // Question 2.2.1: Which of these filters should we use preserve when we run our convolution and which ones should we not? Why?
@@ -196,13 +234,33 @@ image sub_image(image a, image b)
 image make_gx_filter()
 {
     // TODO
-    return make_image(1,1,1);
+    image ret = make_image(3, 3, 1);
+    set_pixel(ret, 0, 0, 0, -1);
+    set_pixel(ret, 0, 1, 0, -2);
+    set_pixel(ret, 0, 2, 0, -1);
+    set_pixel(ret, 1, 0, 0, 0);
+    set_pixel(ret, 1, 1, 0, 0);
+    set_pixel(ret, 1, 2, 0, 0);
+    set_pixel(ret, 2, 0, 0, 1);
+    set_pixel(ret, 2, 1, 0, 2);
+    set_pixel(ret, 2, 2, 0, 1);
+    return ret;
 }
 
 image make_gy_filter()
 {
     // TODO
-    return make_image(1,1,1);
+    image ret = make_image(3, 3, 1);
+    set_pixel(ret, 0, 0, 0, -1);
+    set_pixel(ret, 0, 1, 0, 0);
+    set_pixel(ret, 0, 2, 0, 1);
+    set_pixel(ret, 1, 0, 0, -2);
+    set_pixel(ret, 1, 1, 0, 0);
+    set_pixel(ret, 1, 2, 0, 2);
+    set_pixel(ret, 2, 0, 0, -1);
+    set_pixel(ret, 2, 1, 0, 0);
+    set_pixel(ret, 2, 2, 0, 1);
+    return ret;
 }
 
 void feature_normalize(image im)
