@@ -204,7 +204,24 @@ image make_emboss_filter()
 image make_gaussian_filter(float sigma)
 {
     // TODO
-    return make_image(1,1,1);
+    int k = 6*sigma;
+    if (k % 2 == 0) {
+        k++;
+    }
+
+    image ret = make_image(k, k, 1);
+
+    int mid = k/2;
+
+    for (int y = -mid; y < k - mid; y++) {
+        for (int x = -mid; x < k - mid; x++) {
+            float Gxy = ((float)1/(TWOPI*sigma*sigma)) * (expf((-x*x - y*y)/(2*sigma*sigma)));
+            set_pixel(ret, x + mid, y + mid, 0, Gxy);
+        }
+    }
+    l1_normalize(ret);
+    return ret;
+
 }
 
 image add_image(image a, image b)
