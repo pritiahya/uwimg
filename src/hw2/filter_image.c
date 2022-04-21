@@ -24,7 +24,7 @@ void l1_normalize(image im)
     for (int c = 0; c < im.c; c++) {
         for (int y = 0; y < im.h; y++) {
             for (int x = 0; x < im.w; x++) {
-                sum +=get_pixel(im, x, y, c);
+                sum += get_pixel(im, x, y, c);
             }
         }
     }
@@ -57,6 +57,10 @@ image convolve_image(image im, image filter, int preserve)
     assert(filter.c == im.c || filter.c == 1);
 
     image new;
+
+    int mid_x = filter.w / 2;
+    int mid_y = filter.h / 2;
+
     if (im.c == filter.c && preserve != 1) {
         image temp = make_image(im.w, im.h, im.c);
         new = make_image(im.w, im.h, 1);
@@ -66,7 +70,7 @@ image convolve_image(image im, image filter, int preserve)
                     float sum = 0.0;
                     for (int fy = 0; fy < filter.h; fy++) {
                         for (int fx = 0; fx < filter.w; fx++) {
-                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * get_pixel(filter, fx, fy, c));
+                            sum = sum + (get_pixel(im, x + fx - mid_x, y + fy - mid_y, c) * get_pixel(filter, fx, fy, c));
                         }
                     }
                     set_pixel(temp, x, y, c, sum);
@@ -93,7 +97,7 @@ image convolve_image(image im, image filter, int preserve)
                     float sum = 0.0;
                     for (int fy = 0; fy < filter.h; fy++) {
                         for (int fx = 0; fx < filter.w; fx++) {
-                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * get_pixel(filter, fx, fy, c));
+                            sum = sum + (get_pixel(im, x + fx - mid_x, y + fy - mid_y, c) * get_pixel(filter, fx, fy, c));
                         }
                     }
                     set_pixel(new, x, y, c, sum);
@@ -110,7 +114,7 @@ image convolve_image(image im, image filter, int preserve)
                     float sum = 0.0;
                     for (int fy = 0; fy < filter.h; fy++) {
                         for (int fx = 0; fx < filter.w; fx++) {
-                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * get_pixel(filter, fx, fy, 0));
+                            sum = sum + (get_pixel(im, x + fx - mid_x, y + fy - mid_y, c) * get_pixel(filter, fx, fy, 0));
                         }
                     }
                     set_pixel(temp, x, y, c, sum);
@@ -135,7 +139,7 @@ image convolve_image(image im, image filter, int preserve)
                     float sum = 0.0;
                     for (int fy = 0; fy < filter.h; fy++) {
                         for (int fx = 0; fx < filter.w; fx++) {
-                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * get_pixel(filter, fx, fy, 0));
+                            sum = sum + (get_pixel(im, x + fx - mid_x, y + fy - mid_y, c) * get_pixel(filter, fx, fy, 0));
                         }
                     }
                     set_pixel(new, x, y, c, sum);
