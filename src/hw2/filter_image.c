@@ -291,8 +291,6 @@ void feature_normalize(image im)
             }
         }
     }
-
-
 }
 
 image *sobel_image(image im)
