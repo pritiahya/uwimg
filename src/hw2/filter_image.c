@@ -225,8 +225,7 @@ image make_gaussian_filter(float sigma)
 image add_image(image a, image b)
 {
     // TODO
-    // need to assert according to spec, but its causing tests to fail?
-    //assert(a.w == b.w && a.h == b.h && a.c == b.c);
+    assert(a.w == b.w && a.h == b.h && a.c == b.c);
     image ret = make_image(a.w, a.h, a.c);
     for (int i = 0; i < a.w * a.h * a.c; i++) {
         ret.data[i] = a.data[i] + b.data[i];
@@ -237,8 +236,7 @@ image add_image(image a, image b)
 image sub_image(image a, image b)
 {
     // TODO
-    // need to assert according to spec, but its causing tests to fail?
-    //assert(a.w == b.w && a.h == b.h && a.c == b.c);
+    assert(a.w == b.w && a.h == b.h && a.c == b.c);
     image ret = make_image(a.w, a.h, a.c);
     for (int i = 0; i < a.w * a.h * a.c; i++) {
         ret.data[i] = a.data[i] - b.data[i];
@@ -311,28 +309,30 @@ void feature_normalize(image im)
 image *sobel_image(image im)
 {
     // TODO
-    // Smooth image
-    image f = make_gaussian_filter(2);
-    image blur = convolve_image(im, f, 1);
-    clamp_image(blur);
 
     // Compute gradient magnitude and direction
     image f_gx = make_gx_filter();
     image f_gy = make_gy_filter();
-    image gx = convolve_image(im, f_gx, 1);
-    image gy = convolve_image(im, f_gy, 1);
-    clamp_image(gx);
-    clamp_image(gy);
+    image gx = convolve_image(im, f_gx, 0);
+    image gy = convolve_image(im, f_gy, 0);
 
     image g = make_image(im.w, im.h, 1);
     for (int y = 0; y < im.h; y++) {
         for (int x = 0; x < im.w; x++) {
-            set_pixel(g, x, y, 0, get_pixel(gx, x, y, 0) + get_pixel(gy, x, y, 0));
+            set_pixel(g, x, y, 0, sqrtf(get_pixel(gx, x, y, 0)*get_pixel(gx, x, y, 0) + get_pixel(gy, x, y, 0)*get_pixel(gy, x, y, 0)));
+        }
+    }
+
+    image d = make_image(im.w, im.h, 1);
+    for (int y = 0; y < im.h; y++) {
+        for (int x = 0; x < im.w; x++) {
+            set_pixel(d, x, y, 0, atan2f(get_pixel(gy, x, y, 0), get_pixel(gx, x, y, 0)));
         }
     }
 
     image *res = calloc(2, sizeof(image));
     res[0] = g;
+    res[1] = d;
 
     return res;
 }
