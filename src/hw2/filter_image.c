@@ -9,17 +9,6 @@
 void l1_normalize(image im)
 {
     // TODO
-    /*int nm = im.w * im.h;
-    for (int c = 0; c < im.c; c++) {
-        for (int y = 0; y < im.h; y++) {
-            for (int x = 0; x < im.w; x++) {
-                set_pixel(im, x, y, c, get_pixel(im, x, y, c) / nm);
-            }
-        }
-    }*/
-
-
-
     float sum = 0;
     for (int c = 0; c < im.c; c++) {
         for (int y = 0; y < im.h; y++) {
@@ -58,10 +47,12 @@ image convolve_image(image im, image filter, int preserve)
 
     image new;
 
+    // Find center of filter
     int mid_x = filter.w / 2;
     int mid_y = filter.h / 2;
 
     if (im.c == filter.c && preserve != 1) {
+        // filter and im have the same number of channels and returns a 1 channel image
         image temp = make_image(im.w, im.h, im.c);
         new = make_image(im.w, im.h, 1);
         for (int c = 0; c < im.c; c++) {
@@ -90,6 +81,7 @@ image convolve_image(image im, image filter, int preserve)
         }
         return new;
     } else if (preserve == 1 && filter.c > 1) {
+        // filter contains more than 1 channel and returns an image with the same number of channels as input
         new = make_image(im.w, im.h, im.c);
         for (int c = 0; c < im.c; c++) {
             for (int y = 0; y < im.h; y++) {
@@ -106,6 +98,7 @@ image convolve_image(image im, image filter, int preserve)
         }
         return new;
     } else if (filter.c == 1 && preserve == 0) {
+        // filter only contains 1 channel and returns a 1 channel image
         image temp = make_image(im.w, im.h, im.c);
         new = make_image(im.w, im.h, 1);
         for (int c = 0; c < im.c; c++) {
@@ -132,6 +125,7 @@ image convolve_image(image im, image filter, int preserve)
         }
         return new;
     } else {
+        // filter contains only 1 channel and returns an image with the same number of channels as input
         new = make_image(im.w, im.h, im.c);
         for (int c = 0; c < im.c; c++) {
             for (int y = 0; y < im.h; y++) {
@@ -317,7 +311,30 @@ void feature_normalize(image im)
 image *sobel_image(image im)
 {
     // TODO
-    return calloc(2, sizeof(image));
+    // Smooth image
+    image f = make_gaussian_filter(2);
+    image blur = convolve_image(im, f, 1);
+    clamp_image(blur);
+
+    // Compute gradient magnitude and direction
+    image f_gx = make_gx_filter();
+    image f_gy = make_gy_filter();
+    image gx = convolve_image(im, f_gx, 1);
+    image gy = convolve_image(im, f_gy, 1);
+    clamp_image(gx);
+    clamp_image(gy);
+
+    image g = make_image(im.w, im.h, 1);
+    for (int y = 0; y < im.h; y++) {
+        for (int x = 0; x < im.w; x++) {
+            set_pixel(g, x, y, 0, get_pixel(gx, x, y, 0) + get_pixel(gy, x, y, 0));
+        }
+    }
+
+    image *res = calloc(2, sizeof(image));
+    res[0] = g;
+
+    return res;
 }
 
 image colorize_sobel(image im)
