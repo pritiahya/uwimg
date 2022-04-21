@@ -85,7 +85,7 @@ image convolve_image(image im, image filter, int preserve)
                 for (int c = 0; c < im.c; c++) {
                     sum = sum + get_pixel(temp, x, y, c);
                 }
-                set_pixel(new, x, y, 1, sum);
+                set_pixel(new, x, y, 0, sum);
             }
         }
         return new;
@@ -105,7 +105,7 @@ image convolve_image(image im, image filter, int preserve)
             }
         }
         return new;
-    } else if (filter.c == 0 && preserve == 1) {
+    } else if (filter.c == 1 && preserve == 0) {
         image temp = make_image(im.w, im.h, im.c);
         new = make_image(im.w, im.h, 1);
         for (int c = 0; c < im.c; c++) {
@@ -127,7 +127,7 @@ image convolve_image(image im, image filter, int preserve)
                 for (int c = 0; c < im.c; c++) {
                     sum = sum + get_pixel(temp, x, y, c);
                 }
-                set_pixel(new, x, y, 1, sum);
+                set_pixel(new, x, y, 0, sum);
             }
         }
         return new;
