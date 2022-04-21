@@ -22,14 +22,11 @@ void l1_normalize(image im)
 image make_box_filter(int w)
 {
     // TODO
-    // TODO: Fix calculation for value
     image new = make_image(w, w, 1);
     float val = 1.0 / (w * w);
-    printf("value = %f\n", val);
     for (int y = 0; y < w; y++) {
         for (int x = 0; x < w; x++) {
-            set_pixel(new, x, y, 1, val);
-            printf("%f   ", get_pixel(new, x, y, 1));
+            set_pixel(new, x, y, 0, val);
         }
     }
     return new;
@@ -69,7 +66,6 @@ image convolve_image(image im, image filter, int preserve)
                 set_pixel(new, x, y, 1, sum);
             }
         }
-        printf("1\n");
         return new;
     } else if (preserve == 1 && filter.c > 1) {
         new = make_image(im.w, im.h, im.c);
@@ -86,7 +82,6 @@ image convolve_image(image im, image filter, int preserve)
                 }
             }
         }
-        printf("2\n");
         return new;
     } else if (filter.c == 0 && preserve == 1) {
         image temp = make_image(im.w, im.h, im.c);
@@ -97,8 +92,7 @@ image convolve_image(image im, image filter, int preserve)
                     float sum = 0.0;
                     for (int fy = 0; fy < filter.h; fy++) {
                         for (int fx = 0; fx < filter.w; fx++) {
-                            // TODO: Change to get_pixel instead of computing filter value
-                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * (1.0 / (filter.w * filter.w)));
+                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * get_pixel(filter, fx, fy, 0));
                         }
                     }
                     set_pixel(temp, x, y, c, sum);
@@ -114,7 +108,6 @@ image convolve_image(image im, image filter, int preserve)
                 set_pixel(new, x, y, 1, sum);
             }
         }
-        printf("3\n");
         return new;
     } else {
         new = make_image(im.w, im.h, im.c);
@@ -124,18 +117,15 @@ image convolve_image(image im, image filter, int preserve)
                     float sum = 0.0;
                     for (int fy = 0; fy < filter.h; fy++) {
                         for (int fx = 0; fx < filter.w; fx++) {
-                            // TODO: Change to get_pixel instead of computing filter value
-                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * (1.0 / (filter.w * filter.w)));
+                            sum = sum + (get_pixel(im, x + fx, y + fy, c) * get_pixel(filter, fx, fy, 0));
                         }
                     }
                     set_pixel(new, x, y, c, sum);
                 }
             }
         }
-        printf("4\n");
         return new;
     }
-    printf("5\n");
     return im;
 }
 
