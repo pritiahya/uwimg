@@ -200,7 +200,8 @@ image make_emboss_filter()
 // Answer: Post processing is required for the images where, after using the filters,
 // the pixel values may be less that 0 or greater than 1. Post processing should not be required
 // for make_box_filter, because none of the pixel values after applying this filter should be less
-// than 0 or greater than 1. Post processing is required for the rest of the filters.
+// than 0 or greater than 1. Post processing is required for the rest of the filters. Post processing
+// can include using clamp_image, l1_normalize, or feature_normalize.
 
 image make_gaussian_filter(float sigma)
 {
