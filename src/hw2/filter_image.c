@@ -340,5 +340,29 @@ image *sobel_image(image im)
 image colorize_sobel(image im)
 {
     // TODO
-    return make_image(1,1,1);
+    image color = make_image(im.w, im.h, 3);
+
+    // smooth image
+    image f = make_gaussian_filter(2);
+    image blur = convolve_image(im, f, 1);
+    clamp_image(blur);
+
+    // sobel
+    image *res = sobel_image(blur);
+    image mag = res[0];
+    image ang = res[1];
+    feature_normalize(mag);
+    feature_normalize(ang);
+    for (int y = 0; y < im.h; y++) {
+        for (int x = 0; x < im.w; x++) {
+            float hue = get_pixel(ang, x, y, 0);
+            float sat = get_pixel(mag, x, y, 0);
+            float val = get_pixel(mag, x, y, 0);
+            set_pixel(color, x, y, 0, hue);
+            set_pixel(color, x, y, 1, sat);
+            set_pixel(color, x, y, 2, val);
+        }
+    }
+    hsv_to_rgb(color);
+    return color;
 }
