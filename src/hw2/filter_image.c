@@ -194,10 +194,13 @@ image make_emboss_filter()
 }
 
 // Question 2.2.1: Which of these filters should we use preserve when we run our convolution and which ones should we not? Why?
-// Answer: TODO
+// Answer: We should use preserve for the sharpen and emboss filters because our convolution will return an image with the same name of channels as the input image when preserve is used. Using the dog image, if we use preserve with the sharpen filter, our convolution will return a sharpened dog image in color. If we use preserve with the emboss filter, our convolution will return a dog image in with the extra stylings. We would not use preserve for the highpass filter because the highpass filter finds edges. When preserve is not used, our convolution returns a 1 channel image, which is in grayscale. When using a highpass filter to find edges, it will be easier to see the edges in a grayscale image where the edges are white and other parts of the image are black.
 
 // Question 2.2.2: Do we have to do any post-processing for the above filters? Which ones and why?
-// Answer: TODO
+// Answer: Post processing is required for the images where, after using the filters,
+// the pixel values may be less that 0 or greater than 1. Post processing should not be required
+// for make_box_filter, because none of the pixel values after applying this filter should be less
+// than 0 or greater than 1. Post processing is required for the rest of the filters.
 
 image make_gaussian_filter(float sigma)
 {
