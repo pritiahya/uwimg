@@ -118,7 +118,11 @@ image find_and_draw_matches(image a, image b, float sigma, float thresh, int nms
 float l1_distance(float *a, float *b, int n)
 {
     // TODO: return the correct number.
-    return 0;
+    float ret = 0;
+    for (int i = 0; i < n; i++) {
+        ret += fabsf(a[i] - b[i]);
+    }
+    return ret;
 }
 
 // Finds best matches between descriptors of two images.
