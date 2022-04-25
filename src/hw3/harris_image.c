@@ -158,6 +158,17 @@ image nms_image(image im, int w)
     //     for neighbors within w:
     //         if neighbor response greater than pixel response:
     //             set response to be very low (I use -999999 [why not 0??])
+    for(int x = 0; x < im.w; x++) {
+        for(int y = 0; y < im.h; y++) {
+            for(int n1 = x - w; n1 < x + w + 1; n1++) {
+                for(int n2 = y - w; n2 < y + w + 1; n2++) {
+                    if(get_pixel(r, n1, n2, 0) > get_pixel(im, x, y, 0)) {
+                        set_pixel(r, x, y, 0, -999999);
+                    }
+                }
+            }
+        }
+    }
     return r;
 }
 
