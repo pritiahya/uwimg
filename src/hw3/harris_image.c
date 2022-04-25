@@ -113,8 +113,17 @@ image smooth_image(image im, float sigma)
 image structure_matrix(image im, float sigma)
 {
     image S = make_image(im.w, im.h, 3);
-    // TODO: calculate structure matrix for im.
-    return S;
+    image Ix = convolve_image(im, make_gx_filter(), 0);
+    image Iy = convolve_image(im, make_gy_filter(), 0);
+
+    for(int x = 0; x < im.w; x++) {
+        for(int y = 0; y < im.h; y++) {
+            set_pixel(S, x, y, 0, get_pixel(Ix, x, y, 0) * get_pixel(Ix, x, y, 0));
+            set_pixel(S, x, y, 1, get_pixel(Iy, x, y, 0) * get_pixel(Iy, x, y, 0));
+            set_pixel(S, x, y, 2, get_pixel(Ix, x, y, 0) * get_pixel(Iy, x, y, 0)); 
+        }
+    }
+    return smooth_image(S, sigma);
 }
 
 // Estimate the cornerness of each pixel given a structure matrix S.
@@ -125,6 +134,15 @@ image cornerness_response(image S)
     image R = make_image(S.w, S.h, 1);
     // TODO: fill in R, "cornerness" for each pixel using the structure matrix.
     // We'll use formulation det(S) - alpha * trace(S)^2, alpha = .06.
+    for(int x = 0; x < S.w; x++) {
+        for(int y = 0; y < S.h; y++) {
+            float detS = get_pixel(S, x, y, 0) * get_pixel(S, x, y, 1) - (get_pixel(S, x, y, 2) * get_pixel(S, x, y, 2));
+            float traceSSquared =  (get_pixel(S, x, y, 0) + get_pixel(S, x, y, 1)) * (get_pixel(S, x, y, 0) + get_pixel(S, x, y, 1));
+            float newPix = detS - 0.06 * traceSSquared;
+            set_pixel(R, x, y, 0, newPix);
+        
+        }
+    }
     return R;
 }
 
