@@ -192,13 +192,25 @@ descriptor *harris_corner_detector(image im, float sigma, float thresh, int nms,
 
 
     //TODO: count number of responses over threshold
-    int count = 1; // change this
-
+    int count = 0; // change this
+    for(int x = 0; x < im.w; x++) {
+        for(int y = 0; y < im.h; y++) {
+            if(get_pixel(Rnms, x, y, 0) > thresh) {
+                count++;
+            }
+        }
+    }
     
     *n = count; // <- set *n equal to number of corners in image.
     descriptor *d = calloc(count, sizeof(descriptor));
     //TODO: fill in array *d with descriptors of corners, use describe_index.
-
+    int ind = 0;
+    for (int i = 0; i < (Rnms.w*Rnms.h); i++) {
+        if(Rnms.data[i] > thresh) {
+            d[ind] = describe_index(im, i);
+            ind++;
+        }
+    }
 
     free_image(S);
     free_image(R);
