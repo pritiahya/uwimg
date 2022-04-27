@@ -172,7 +172,12 @@ point project_point(matrix H, point p)
     // TODO: project point p with homography H.
     // Remember that homogeneous coordinates are equivalent up to scalar.
     // Have to divide by.... something...
-    point q = make_point(0, 0);
+    c.data[0][0] = p.x;
+    c.data[1][0] = p.y;
+    c.data[2][0] = 1;
+
+    matrix m = matrix_mult_matrix(H, c);
+    point q = make_point(m.data[0][0]/m.data[2][0], m.data[1][0]/m.data[2][0]);
     return q;
 }
 
@@ -182,7 +187,7 @@ point project_point(matrix H, point p)
 float point_distance(point p, point q)
 {
     // TODO: should be a quick one.
-    return 0;
+    return sqrtf((p.x-q.x)*(p.x-q.x) + (p.y-q.y)*(p.y-q.y));
 }
 
 // Count number of inliers in a set of matches. Should also bring inliers
@@ -201,6 +206,17 @@ int model_inliers(matrix H, match *m, int n, float thresh)
     // TODO: count number of matches that are inliers
     // i.e. distance(H*p, q) < thresh
     // Also, sort the matches m so the inliers are the first 'count' elements.
+    for(int j = 0; j < n; j++) {
+        float dist = point_distance(project_point(H, m[count].p), m[count].q);
+        if (dist < thresh) {
+            count++;
+        } else {
+            match temp = m[count];
+            m[count] = m[n + count - j - 1];
+            m[n + count - j - 1] = temp;
+        }
+    }
+    
     return count;
 }
 
