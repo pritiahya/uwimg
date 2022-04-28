@@ -6,6 +6,7 @@
 .fuse*
 libuwimg*
 uwimg
+.vscode
 
 # OS Generated #
 .DS_Store*
