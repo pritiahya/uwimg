@@ -405,6 +405,7 @@ image combine_images(image a, image b, matrix H)
         for(j = 0; j < a.h; ++j){
             for(i = 0; i < a.w; ++i){
                 // TODO: fill in.
+                set_pixel(c, i + dx, j + dy, k, get_pixel(a, i, j, k));
             }
         }
     }
@@ -414,6 +415,13 @@ image combine_images(image a, image b, matrix H)
     // and see if their projection from a coordinates to b coordinates falls
     // inside of the bounds of image b. If so, use bilinear interpolation to
     // estimate the value of b at that projection, then fill in image c.
+    for (k = 0; k < c.c; k++) {
+        for (j = 0; j < c.h; j++) {
+            for (i = 0; i < c.w; i++) {
+                // TODO: fill in.
+            }
+        }
+    }
 
     return c;
 }
