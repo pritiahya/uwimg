@@ -305,7 +305,15 @@ matrix compute_homography(match *matches, int n)
 
     matrix H = make_matrix(3, 3);
     // TODO: fill in the homography H based on the result in a.
-    
+    H.data[0][0] = a.data[0][0];
+    H.data[0][1] = a.data[0][1];
+    H.data[0][2] = a.data[0][2];
+    H.data[1][0] = a.data[0][3];
+    H.data[1][1] = a.data[0][4];
+    H.data[1][2] = a.data[0][5];
+    H.data[2][0] = a.data[0][6];
+    H.data[2][1] = a.data[0][7];
+    H.data[2][2] = 1;
 
     free_matrix(a);
     return H;
