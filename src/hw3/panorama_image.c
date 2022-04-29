@@ -274,27 +274,25 @@ matrix compute_homography(match *matches, int n)
         double y  = matches[i].p.y;
         double yp = matches[i].q.y;
         // TODO: fill in the matrices M and b.
-        if (i % 2 == 0) {
-            M.data[i][0] = x;
-            M.data[i][1] = y;
-            M.data[i][2] = 1;
-            M.data[i][3] = 0;
-            M.data[i][4] = 0;
-            M.data[i][5] = 0;
-            M.data[i][6] = (-1) * x * xp;
-            M.data[i][7] = (-1) * y * xp;
-            b.data[i][0] = xp;
-        } else {
-            M.data[i][0] = 0;
-            M.data[i][1] = 0;
-            M.data[i][2] = 0;
-            M.data[i][3] = x;
-            M.data[i][4] = y;
-            M.data[i][5] = 1;
-            M.data[i][6] = (-1) * x * yp;
-            M.data[i][7] = (-1) * y * yp;
-            b.data[i][0] = yp;
-        }
+        M.data[i * 2][0] = x;
+        M.data[i * 2][1] = y;
+        M.data[i * 2][2] = 1.0;
+        M.data[i * 2][3] = 0.0;
+        M.data[i * 2][4] = 0.0;
+        M.data[i * 2][5] = 0.0;
+        M.data[i * 2][6] = ((-1.0) * x) * xp;
+        M.data[i * 2][7] = ((-1.0) * y) * xp;
+        b.data[i * 2][0] = xp;
+
+        M.data[i * 2 + 1][0] = 0.0;
+        M.data[i * 2 + 1][1] = 0.0;
+        M.data[i * 2 + 1][2] = 0.0;
+        M.data[i * 2 + 1][3] = x;
+        M.data[i * 2 + 1][4] = y;
+        M.data[i * 2 + 1][5] = 1.0;
+        M.data[i * 2 + 1][6] = ((-1.0) * x) * yp;
+        M.data[i * 2 + 1][7] = ((-1.0) * y) * yp;
+        b.data[i * 2 + 1][0] = yp;
     }
     matrix a = solve_system(M, b);
     free_matrix(M); free_matrix(b);
@@ -313,7 +311,7 @@ matrix compute_homography(match *matches, int n)
     H.data[1][2] = a.data[0][5];
     H.data[2][0] = a.data[0][6];
     H.data[2][1] = a.data[0][7];
-    H.data[2][2] = 1;
+    H.data[2][2] = 1.0;
 
     free_matrix(a);
     return H;
