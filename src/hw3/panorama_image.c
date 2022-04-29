@@ -349,7 +349,16 @@ matrix RANSAC(match *m, int n, float thresh, int k, int cutoff)
     for (int i = 0; i < k; i++) {
         randomize_matches(m, n);
         matrix H = compute_homography(m, 6);
-
+        if(H.data) {
+            int inliners = model_inliers(H, m, n, thresh);
+            if (inliners > best) {
+                Hb = compute_homography(m, inliners);
+                best = inliners;
+                if(inliners > cutoff) {
+                    return Hb;
+                }
+            }
+        }
     }
     return Hb;
 }
