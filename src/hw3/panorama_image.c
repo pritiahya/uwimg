@@ -405,7 +405,7 @@ image combine_images(image a, image b, matrix H)
         for(j = 0; j < a.h; ++j){
             for(i = 0; i < a.w; ++i){
                 // TODO: fill in.
-                set_pixel(c, i + dx, j + dy, k, get_pixel(a, i, j, k));
+                set_pixel(c, i - dx, j - dy, k, get_pixel(a, i, j, k));
             }
         }
     }
@@ -419,8 +419,8 @@ image combine_images(image a, image b, matrix H)
         for (j = 0; j < c.h; j++) {
             for (i = 0; i < c.w; i++) {
                 // TODO: fill in.
-                point pt = project_point(H, make_point(i, j));
-                if ((pt.x >= topleft.x && pt.x <= botright.x) && (pt.y >= topleft.y && pt.y <= botright.y)) {
+                point pt = project_point(H, make_point(i + dx, j + dy));
+                if ((pt.x >= (topleft.x) && pt.x <= (botright.x - dx)) && (pt.y >= (topleft.y - dy) && pt.y <= (botright.y))) {
                     set_pixel(c, i, j, k, bilinear_interpolate(b, pt.x, pt.y, k));
                 }
             }
@@ -457,8 +457,8 @@ image panorama_image(image a, image b, float sigma, float thresh, int nms, float
 
     if(1){
         // Mark corners and matches between images
-        mark_corners(a, ad, an);
-        mark_corners(b, bd, bn);
+        // mark_corners(a, ad, an);
+        // mark_corners(b, bd, bn);
         image inlier_matches = draw_inliers(a, b, H, m, mn, inlier_thresh);
         save_image(inlier_matches, "inliers");
     }
