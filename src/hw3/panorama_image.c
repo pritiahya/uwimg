@@ -419,6 +419,10 @@ image combine_images(image a, image b, matrix H)
         for (j = 0; j < c.h; j++) {
             for (i = 0; i < c.w; i++) {
                 // TODO: fill in.
+                point pt = project_point(H, make_point(i, j));
+                if ((pt.x >= topleft.x && pt.x <= botright.x) && (pt.y >= topleft.y && pt.y <= botright.y)) {
+                    set_pixel(c, i, j, k, bilinear_interpolate(b, pt.x, pt.y, k));
+                }
             }
         }
     }
