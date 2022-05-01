@@ -420,7 +420,7 @@ image combine_images(image a, image b, matrix H)
             for (i = 0; i < c.w; i++) {
                 // TODO: fill in.
                 point pt = project_point(H, make_point(i + dx, j + dy));
-                if ((pt.x >= (topleft.x) && pt.x <= (botright.x - dx)) && (pt.y >= (topleft.y - dy) && pt.y <= (botright.y))) {
+                if ((pt.x >= dx) && (pt.y >= (topleft.y - dy) && pt.y <= (botright.y))) {
                     set_pixel(c, i, j, k, bilinear_interpolate(b, pt.x, pt.y, k));
                 }
             }
