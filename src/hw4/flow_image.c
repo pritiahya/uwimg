@@ -86,9 +86,9 @@ image box_filter_image(image im, int s)
     for (int c = 0; c < im.c; c++) {
         for (int y = 0; y < im.h; y++) {
             for (int x = 0; x < im.w; x++) {
-                float top_left_sum = get_pixel(integ, x - mid_x, y - mid_y, c);
-                float top_right_sum = get_pixel(integ, x + mid_x, y - mid_y, c);
-                float bottom_left_sum = get_pixel(integ, x - mid_x, y + mid_y, c);
+                float top_left_sum = get_pixel(integ, x - mid_x - 1, y - mid_y - 1, c);
+                float top_right_sum = get_pixel(integ, x + mid_x, y - mid_y - 1, c);
+                float bottom_left_sum = get_pixel(integ, x - mid_x - 1, y + mid_y, c);
                 float bottom_right_sum = get_pixel(integ, x + mid_x, y + mid_y, c);
 
                 set_pixel(S, x, y, c, (top_left_sum + bottom_right_sum - top_right_sum - bottom_left_sum) / (((x + mid_x) - (x - mid_x)) * ((y + mid_y) - (y - mid_y))));
