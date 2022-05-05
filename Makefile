@@ -13,28 +13,28 @@ EXEC=uwimg
 OBJDIR=./obj/
 
 CC=gcc
-CPP=g++ -std=c++11 
+CPP=g++ -std=c++11
 AR=ar
 ARFLAGS=rcs
 OPTS=-Ofast
-LDFLAGS= -lm -pthread 
-COMMON= -Iinclude/ -Isrc/ 
+LDFLAGS= -lm -pthread
+COMMON= -Iinclude/ -Isrc/
 CFLAGS=-Wall -Wno-unknown-pragmas -Wfatal-errors -fPIC
 
-ifeq ($(OPENMP), 1) 
+ifeq ($(OPENMP), 1)
 CFLAGS+= -fopenmp
 endif
 
-ifeq ($(DEBUG), 1) 
+ifeq ($(DEBUG), 1)
 OPTS=-O0 -g
-COMMON= -Iinclude/ -Isrc/ 
+COMMON= -Iinclude/ -Isrc/
 else
-CFLAGS+= 
+CFLAGS+=
 endif
 
 CFLAGS+=$(OPTS)
 
-ifeq ($(OPENCV), 1) 
+ifeq ($(OPENCV), 1)
 COMMON+= -DOPENCV
 CFLAGS+= -DOPENCV
 LDFLAGS+= `pkg-config --libs opencv4` -lstdc++  # This may vary depending on your OpenCV version
@@ -43,14 +43,14 @@ endif
 
 EXOBJS = $(addprefix $(OBJDIR), $(EXOBJ))
 OBJS = $(addprefix $(OBJDIR), $(OBJ))
-DEPS = $(wildcard src/*.h) Makefile 
+DEPS = $(wildcard src/*.h) Makefile
 
 all: obj $(SLIB) $(ALIB) $(EXEC)
 #all: obj $(EXEC)
 
 
 $(EXEC): $(EXOBJS) $(OBJS)
-	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS) 
+	$(CC) $(COMMON) $(CFLAGS) $^ -o $@ $(LDFLAGS)
 
 $(ALIB): $(OBJS)
 	$(AR) $(ARFLAGS) $@ $^

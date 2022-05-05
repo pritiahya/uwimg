@@ -78,6 +78,24 @@ image box_filter_image(image im, int s)
     image integ = make_integral_image(im);
     image S = make_image(im.w, im.h, im.c);
     // TODO: fill in S using the integral image.
+    image box_filter = make_box_filter(s);
+
+    int mid_x = box_filter.w / 2;
+    int mid_y = box_filter.h / 2;
+
+    for (int c = 0; c < im.c; c++) {
+        for (int y = 0; y < im.h; y++) {
+            for (int x = 0; x < im.w; x++) {
+                float top_left_sum = get_pixel(integ, x - mid_x, y - mid_y, c);
+                float top_right_sum = get_pixel(integ, x + mid_x, y - mid_y, c);
+                float bottom_left_sum = get_pixel(integ, x - mid_x, y + mid_y, c);
+                float bottom_right_sum = get_pixel(integ, x + mid_x, y + mid_y, c);
+
+                set_pixel(S, x, y, c, (top_left_sum + bottom_right_sum - top_right_sum - bottom_left_sum) / (((x + mid_x) - (x - mid_x)) * ((y + mid_y) - (y - mid_y))));
+
+            }
+        }
+    }
     return S;
 }
 
@@ -175,7 +193,7 @@ void constrain_image(image im, float v)
 // returns: velocity matrix
 image optical_flow_images(image im, image prev, int smooth, int stride)
 {
-    image S = time_structure_matrix(im, prev, smooth);   
+    image S = time_structure_matrix(im, prev, smooth);
     image v = velocity_image(S, stride);
     constrain_image(v, 6);
     image vs = smooth_image(v, 2);
