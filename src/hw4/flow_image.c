@@ -125,9 +125,28 @@ image time_structure_matrix(image im, image prev, int s)
     }
 
     // TODO: calculate gradients, structure components, and smooth them
-
     image S;
+    
+    image Ix = convolve_image(im, make_gx_filter(), 0);
+    image Iy = convolve_image(im, make_gy_filter(), 0);
 
+    image sub = sub_image(im, prev);
+
+    S = make_image(im.w, im.h, 5);
+    for (int y = 0; y < im.h; y++) {
+        for (int x = 0; x < im.w; x++) {
+            float isub = get_pixel(sub, x, y, 0);
+            float ix = get_pixel(Ix, x, y, 0);
+            float iy = get_pixel(Iy, x, y, 0);
+
+            set_pixel(S, x, y, 0, ix*ix);
+            set_pixel(S, x, y, 1, iy*iy);
+            set_pixel(S, x, y, 2, ix*iy);
+            set_pixel(S, x, y, 3, ix*isub);
+            set_pixel(S, x, y, 4, iy*isub);
+        }
+    }
+    S = box_filter_image(S, s);
     if(converted){
         free_image(im); free_image(prev);
     }
