@@ -78,10 +78,10 @@ image box_filter_image(image im, int s)
     image integ = make_integral_image(im);
     image S = make_image(im.w, im.h, im.c);
     // TODO: fill in S using the integral image.
-    image box_filter = make_box_filter(s);
+    //image box_filter = make_box_filter(s);
 
-    int mid_x = box_filter.w / 2;
-    int mid_y = box_filter.h / 2;
+    int mid_x = s / 2;
+    int mid_y = s / 2;
 
     for (int c = 0; c < im.c; c++) {
         for (int y = 0; y < im.h; y++) {
@@ -91,7 +91,16 @@ image box_filter_image(image im, int s)
                 float bottom_left_sum = get_pixel(integ, x - mid_x - 1, y + mid_y, c);
                 float bottom_right_sum = get_pixel(integ, x + mid_x, y + mid_y, c);
 
-                set_pixel(S, x, y, c, (top_left_sum + bottom_right_sum - top_right_sum - bottom_left_sum) / (((x + mid_x) - (x - mid_x)) * ((y + mid_y) - (y - mid_y))));
+                float area = s*s;
+                if((x -mid_x < 0 || x + mid_x >= im.w) && (y - mid_y < 0 || y + mid_y >= im.h)) {
+                    area -=(s+s-1);
+                } else if(x -mid_x < 0 || x + mid_x >= im.w) {
+                    area-=s;
+                }
+                else if(y - mid_y < 0 || y + mid_y >= im.h) {
+                    area-=s;
+                }
+                set_pixel(S, x, y, c, (top_left_sum + bottom_right_sum - top_right_sum - bottom_left_sum) / area);
 
             }
         }
