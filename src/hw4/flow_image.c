@@ -176,7 +176,6 @@ image velocity_image(image S, int stride)
             M.data[0][1] = Ixy;
             M.data[1][0] = Ixy;
             M.data[1][1] = Iyy;
-            matrix none = {0};
             matrix M_inv = matrix_invert(M);
 
             if (M_inv.rows > 0) {
