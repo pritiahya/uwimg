@@ -126,7 +126,7 @@ image time_structure_matrix(image im, image prev, int s)
 
     // TODO: calculate gradients, structure components, and smooth them
     image S;
-    
+
     image Ix = convolve_image(im, make_gx_filter(), 0);
     image Iy = convolve_image(im, make_gy_filter(), 0);
 
@@ -172,6 +172,22 @@ image velocity_image(image S, int stride)
             // TODO: calculate vx and vy using the flow equation
             float vx = 0;
             float vy = 0;
+            M.data[0][0] = Ixx;
+            M.data[0][1] = Ixy;
+            M.data[1][0] = Ixy;
+            M.data[1][1] = Iyy;
+            matrix none = {0};
+            matrix M_inv = matrix_invert(M);
+
+            if (M_inv.rows > 0) {
+                matrix b = make_matrix(2, 1);
+                b.data[0][0] = -Ixt;
+                b.data[1][0] = -Iyt;
+
+                matrix v = matrix_mult_matrix(M_inv, b);
+                vx = v.data[0][0];
+                vy = v.data[1][0];
+            }
 
             set_pixel(v, i/stride, j/stride, 0, vx);
             set_pixel(v, i/stride, j/stride, 1, vy);
