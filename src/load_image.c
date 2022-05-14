@@ -117,6 +117,7 @@ image load_image_binary(const char *fname)
     fread(&c, sizeof(int), 1, fp);
     image im = make_image(w,h,c);
     fread(im.data, sizeof(float), im.w*im.h*im.c, fp);
+    fclose(fp);
     return im;
 }
 
