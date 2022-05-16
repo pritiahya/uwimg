@@ -16,17 +16,29 @@ void activate_matrix(matrix m, ACTIVATION a)
             double x = m.data[i][j];
             if(a == LOGISTIC){
                 // TODO
+                m.data[i][j] = 1 / (1 + exp(-1 * x));
             } else if (a == RELU){
                 // TODO
+                if (x <= 0) {
+                  m.data[i][j] = 0;
+                }
             } else if (a == LRELU){
                 // TODO
+                if (x <= 0) {
+                  m.data[i][j] = 0.1 * x;
+                }
             } else if (a == SOFTMAX){
                 // TODO
+                m.data[i][j] = exp(x);
             }
             sum += m.data[i][j];
         }
         if (a == SOFTMAX) {
             // TODO: have to normalize by sum if we are using SOFTMAX
+            for (j = 0; j < m.cols; j++) {
+                double val = m.data[i][j];
+                m.data[i][j] = val / sum;
+            }
         }
     }
 }
@@ -42,7 +54,19 @@ void gradient_matrix(matrix m, ACTIVATION a, matrix d)
     for(i = 0; i < m.rows; ++i){
         for(j = 0; j < m.cols; ++j){
             double x = m.data[i][j];
+            double delta = d.data[i][j];
             // TODO: multiply the correct element of d by the gradient
+            if (a == LOGISTIC) {
+              d.data[i][j] = delta * (x * (1 - x));
+            } else if (a == RELU) {
+              if (x <= 0) {
+                d.data[i][j] = 0;
+              }
+            } else if (a == LRELU) {
+              if (x <= 0) {
+                d.data[i][j] = 0.1 * delta;
+              }
+            }
         }
     }
 }
@@ -59,7 +83,8 @@ matrix forward_layer(layer *l, matrix in)
 
     // TODO: fix this! multiply input by weights and apply activation function.
     matrix out = make_matrix(in.rows, l->w.cols);
-
+    out = matrix_mult_matrix(in, l->w);
+    activate_matrix(out, l->activation);
 
     free_matrix(l->out);// free the old output
     l->out = out;       // Save the current output for gradient calculation
@@ -83,7 +108,7 @@ matrix backward_layer(layer *l, matrix delta)
     matrix dw = make_matrix(l->w.rows, l->w.cols); // replace this
     l->dw = dw;
 
-    
+
     // 1.4.3
     // TODO: finally, calculate dL/dx and return it.
     matrix dx = make_matrix(l->in.rows, l->in.cols); // replace this
@@ -242,7 +267,7 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 }
 
 
-// Questions 
+// Questions
 //
 // 5.2.2.1 Why might we be interested in both training accuracy and testing accuracy? What do these two numbers tell us about our current model?
 // TODO
