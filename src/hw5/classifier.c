@@ -286,6 +286,10 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 //
 // 5.2.2.1 Why might we be interested in both training accuracy and testing accuracy? What do these two numbers tell us about our current model?
 // TODO
+// The training accuracy tells us how well our model performs on the data it was trained wiht, and the testing accuracy tells us how well our model
+// performs on the data that it has not seen during training. If the model performs good on the training data but bad on the testing data, then our
+// model is too biased towards the training data. If the training accuracy is bad, then perhaps the model has not been trained properly at all. In
+// general, the testing accuracy tells us how well the model will do in general on any new random data. 
 //
 // 5.2.2.2 Try varying the model parameter for learning rate to different powers of 10 (i.e. 10^1, 10^0, 10^-1, 10^-2, 10^-3) and training the model. What patterns do you see and how does the choice of learning rate affect both the loss during training and the final model accuracy?
 // TODO
