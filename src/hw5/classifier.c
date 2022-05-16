@@ -100,18 +100,19 @@ matrix backward_layer(layer *l, matrix delta)
     // 1.4.1
     // delta is dL/dy
     // TODO: modify it in place to be dL/d(xw)
+    gradient_matrix(l->out, l->activation, delta);
 
 
     // 1.4.2
     // TODO: then calculate dL/dw and save it in l->dw
     free_matrix(l->dw);
-    matrix dw = make_matrix(l->w.rows, l->w.cols); // replace this
+    matrix dw = matrix_mult_matrix(transpose_matrix(l->in), delta); // replace this
     l->dw = dw;
 
 
     // 1.4.3
     // TODO: finally, calculate dL/dx and return it.
-    matrix dx = make_matrix(l->in.rows, l->in.cols); // replace this
+    matrix dx = matrix_mult_matrix(delta, transpose_matrix(l->w)); // replace this
 
     return dx;
 }
@@ -126,13 +127,27 @@ void update_layer(layer *l, double rate, double momentum, double decay)
     // TODO:
     // Calculate Δw_t = dL/dw_t - λw_t + mΔw_{t-1}
     // save it to l->v
+    matrix wd = make_matrix(l->w.rows, l->w.cols);
+    for (int i = 0; i < l->w.rows; i++) {
+        for (int j = 0; j < l->w.cols; j++) {
+            wd.data[i][j] = decay * l->w.data[i][j];
+        }
+    }
 
+    matrix m = make_matrix(l->v.rows, l->v.cols);
+    for (int i = 0; i < l->v.rows; i++) {
+        for (int j = 0; j < l->v.cols; j++) {
+            m.data[i][j] = momentum * l->v.data[i][j];
+        }
+    }
+
+    l->v = axpy_matrix(1, l->dw, axpy_matrix(-1, wd, m));
 
     // Update l->w
+    l->w = axpy_matrix(rate, l->v, l->w);
 
 
     // Remember to free any intermediate results to avoid memory leaks
-
 }
 
 // Make a new layer for our model
