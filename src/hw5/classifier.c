@@ -329,10 +329,22 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 
 // 5.2.3.4 Modify your model so it has 3 layers instead of two. The layers should be `inputs -> 64`, `64 -> 32`, and `32 -> outputs`. Also modify your model to train for 3000 iterations instead of 1000. Look at the training and testing error for different values of decay (powers of 10, 10^-4 -> 10^0). Which is best? Why?
 // TODO
-//
+// With the three layers as specified with a decay of 0.0001, we have the training accuracy as 0.927166666666666 and the test accuracy as 0.9223
+// With a decay of 0.001 we have training accuracy as 0.9270333333333334 and test accuracy as 0.9225
+// With a decay of 0.01 we have the training accuracy as 0.9260166666666667and test accuracy as 0. 9222
+// With a decay of 0.1 we have the training accuracy as 0.9137833333333333 and test accuracy as 0.9145
+// Finally, with a decay of 1, we have the training accuracy as 0.8931 and test accuracy as 0.8968.
+// The best test accuracy happens when the decay is  0.001, because this is the value for which the model is least likely
+// to overfit, but still learn properly from the training data.
+
 // 5.3.2.1 How well does your network perform on the CIFAR dataset?
 // TODO
-//
+// We got a training accuracy of 0.2385 and a test accuracy of 0.2325 with the following values:
+// batch = 128
+// iters = 1000
+// rate = 0.1
+// momentum = .9
+// decay = 0.
 
 
 
