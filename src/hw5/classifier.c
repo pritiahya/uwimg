@@ -285,66 +285,59 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 // Questions
 //
 // 5.2.2.1 Why might we be interested in both training accuracy and testing accuracy? What do these two numbers tell us about our current model?
-// TODO
 // The training accuracy tells us how well our model performs on the data it was trained wiht, and the testing accuracy tells us how well our model
 // performs on the data that it has not seen during training. If the model performs good on the training data but bad on the testing data, then our
 // model is too biased towards the training data. If the training accuracy is bad, then perhaps the model has not been trained properly at all. In
-// general, the testing accuracy tells us how well the model will do in general on any new random data. 
+// general, the testing accuracy tells us how well the model will do in general on any new random data.
 
 // 5.2.2.2 Try varying the model parameter for learning rate to different powers of 10 (i.e. 10^1, 10^0, 10^-1, 10^-2, 10^-3) and training the model. What patterns do you see and how does the choice of learning rate affect both the loss during training and the final model accuracy?
-// TODO
 // As learning rate goes from 10 to 0.0001, loss during training decreases up till about 0.1-0.4
-// (this is when the learning rate is 0.1) then increases again. 
-// The model accuracy increases as learning rate decreases until when the learning rate is 0.1. 
-// Here it reaches its peak - training accuracy is 0.92175 and test accuracy is 0.9178 - and then the accuracy decreases as learning rate decreases more than 0.01
-// The model accuracy is worse when learning rate is 10, as compared to when it is about 0.0001
+// (this is when the learning rate is 0.1) then increases again.
+// The model accuracy increases as learning rate decreases until when the learning rate is 0.1.
+// Here it reaches its peak--training accuracy is 0.92175 and test accuracy is 0.9178--and then the accuracy decreases as learning rate decreases more than 0.01.
+// The model accuracy is worse when learning rate is 10, as compared to when it is about 0.0001.
 
 // 5.2.2.3 Try varying the parameter for weight decay to different powers of 10: (10^0, 10^-1, 10^-2, 10^-3, 10^-4, 10^-5). How does weight decay affect the final model training and test accuracy?
-// TODO
 // As the weight decay goes from 0.00001 to 1, the final model training and test accuracy gets worse.
 // The accuracy is very similar as the weight decay goes from 0.00001 to 0.01, and then the accuracy gets worse as we increase weight decay.
-// When decay is 1, training accuracy is 0.8961833333333333 and test accuracy is 0.8991, and when decay is 0.00001, 
-// training accuracy is 0.92175 and test accuracy is 0.9178. 
+// When decay is 1, training accuracy is 0.8961833333333333 and test accuracy is 0.8991, and when decay is 0.00001,
+// training accuracy is 0.92175 and test accuracy is 0.9178.
 
 // 5.2.3.1 Currently the model uses a logistic activation for the first layer. Try using a the different activation functions we programmed. How well do they perform? What's best?
-// TODO
 // All the activation functions (LRELU, RELU, and LOGISTIC) perform equally as good
-// with a training accuracy of 0.92175 and a testing accuracy of 0.9178 
+// with a training accuracy of 0.92175 and a testing accuracy of 0.9178.
 
 // 5.2.3.2 Using the same activation, find the best (power of 10) learning rate for your model. What is the training accuracy and testing accuracy?
-// TODO
-// The best learning rate for the model is still 0.1, and it gives us a training accuracy of 0.92175 and a testing accuracy of 0.9178
+// The best learning rate for the model is still 0.1, and it gives us a training accuracy of 0.92175 and a testing accuracy of 0.9178.
 
 // 5.2.3.3 Right now the regularization parameter `decay` is set to 0. Try adding some decay to your model. What happens, does it help? Why or why not may this be?
-// TODO
 // As the weight decay goes from 0.00001 to 1, the final model training and test accuracy gets worse.
 // The accuracy is very similar as the weight decay goes from 0.00001 to 0.01, and then the accuracy gets worse as we increase weight decay.
-// When decay is 1, training accuracy is 0.8961833333333333 and test accuracy is 0.8991, and when decay is 0.00001, 
-// training accuracy is 0.92175 and test accuracy is 0.9178. 
+// When decay is 1, training accuracy is 0.8961833333333333 and test accuracy is 0.8991, and when decay is 0.00001,
+// training accuracy is 0.92175 and test accuracy is 0.9178.
 // Adding decay to the model does not help increase the training or the testing accuracy - both
 // training and testing accuracy decrease as decay increases. But adding decay
 // does help in reducing the difference between the test and training accuracy. As the decay increases,
 // the difference between the test and training accuracy decreases, due to the model not overfitting
-// the training data
+// the training data.
 
 // 5.2.3.4 Modify your model so it has 3 layers instead of two. The layers should be `inputs -> 64`, `64 -> 32`, and `32 -> outputs`. Also modify your model to train for 3000 iterations instead of 1000. Look at the training and testing error for different values of decay (powers of 10, 10^-4 -> 10^0). Which is best? Why?
-// TODO
-// With the three layers as specified with a decay of 0.0001, we have the training accuracy as 0.927166666666666 and the test accuracy as 0.9223
-// With a decay of 0.001 we have training accuracy as 0.9270333333333334 and test accuracy as 0.9225
-// With a decay of 0.01 we have the training accuracy as 0.9260166666666667and test accuracy as 0. 9222
-// With a decay of 0.1 we have the training accuracy as 0.9137833333333333 and test accuracy as 0.9145
+// With the three layers as specified with a decay of 0.0001, we have the training accuracy as 0.927166666666666 and the test accuracy as 0.9223.
+// With a decay of 0.001 we have training accuracy as 0.9270333333333334 and test accuracy as 0.9225.
+// With a decay of 0.01 we have the training accuracy as 0.9260166666666667and test accuracy as 0. 9222.
+// With a decay of 0.1 we have the training accuracy as 0.9137833333333333 and test accuracy as 0.9145.
 // Finally, with a decay of 1, we have the training accuracy as 0.8931 and test accuracy as 0.8968.
 // The best test accuracy happens when the decay is  0.001, because this is the value for which the model is least likely
 // to overfit, but still learn properly from the training data.
 
 // 5.3.2.1 How well does your network perform on the CIFAR dataset?
 // TODO
-// We got a training accuracy of 0.2385 and a test accuracy of 0.2325 with the following values:
+// We got a training accuracy of 0.39792 and a test accuracy of 0.381 with the following values:
 // batch = 128
-// iters = 1000
-// rate = 0.1
+// iters = 3000
+// rate = .002
 // momentum = .9
-// decay = 0.
+// decay = .0
 
 
 
