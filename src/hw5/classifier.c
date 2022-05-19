@@ -304,17 +304,17 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 // training accuracy is 0.92175 and test accuracy is 0.9178.
 
 // 5.2.3.1 Currently the model uses a logistic activation for the first layer. Try using a the different activation functions we programmed. How well do they perform? What's best?
-// All the activation functions (LRELU, RELU, and LOGISTIC) perform equally as good
-// with a training accuracy of 0.92175 and a testing accuracy of 0.9178.
+// RELU and LRELU performed around the same with training accuracies of 0.92583 and 0.92342, respectively, and test accuracies of 0.9273 and 0.9251, respectively. LOGISTIC performed slightly worst than RELU and LRELU with a training accuracy of 0.88743 and test accuracy of 0.8929. SOFTMAX performed the worst of all the activation functions with a training accuracy of 0.5703 and test accuracy of 0.5792. The best activation function was RELU.
 
 // 5.2.3.2 Using the same activation, find the best (power of 10) learning rate for your model. What is the training accuracy and testing accuracy?
-// The best learning rate for the model is still 0.1, and it gives us a training accuracy of 0.92175 and a testing accuracy of 0.9178.
+// Using RELU for the activation function of the first layer, the best learning rate for the model is 0.1, and it gives us a training accuracy of 0.9653333333333334 and a testing accuracy of 0.96.
 
 // 5.2.3.3 Right now the regularization parameter `decay` is set to 0. Try adding some decay to your model. What happens, does it help? Why or why not may this be?
-// As the weight decay goes from 0.00001 to 1, the final model training and test accuracy gets worse.
-// The accuracy is very similar as the weight decay goes from 0.00001 to 0.01, and then the accuracy gets worse as we increase weight decay.
-// When decay is 1, training accuracy is 0.8961833333333333 and test accuracy is 0.8991, and when decay is 0.00001,
-// training accuracy is 0.92175 and test accuracy is 0.9178.
+// We used RELU activation function for the first layer and a learning rate of 0.1 while adding decay to the model.
+// As the weight decay goes from 0.00001 to 0.1, the final model training and test accuracy stays about the same and gets worse when the weight decay is 1.
+// The accuracy is very similar as the weight decay goes from 0.00001 to 0.1, and then the accuracy gets worse as we increase weight decay.
+// When decay is 1, training accuracy is 0.9249333333333334 and test accuracy is 0.9287, and when decay is 0.00001,
+// training accuracy is 0.9650833333333333 and test accuracy is 0.9603.
 // Adding decay to the model does not help increase the training or the testing accuracy - both
 // training and testing accuracy decrease as decay increases. But adding decay
 // does help in reducing the difference between the test and training accuracy. As the decay increases,
@@ -322,22 +322,19 @@ void train_model(model m, data d, int batch, int iters, double rate, double mome
 // the training data.
 
 // 5.2.3.4 Modify your model so it has 3 layers instead of two. The layers should be `inputs -> 64`, `64 -> 32`, and `32 -> outputs`. Also modify your model to train for 3000 iterations instead of 1000. Look at the training and testing error for different values of decay (powers of 10, 10^-4 -> 10^0). Which is best? Why?
-// With the three layers as specified with a decay of 0.0001, we have the training accuracy as 0.927166666666666 and the test accuracy as 0.9223.
-// With a decay of 0.001 we have training accuracy as 0.9270333333333334 and test accuracy as 0.9225.
-// With a decay of 0.01 we have the training accuracy as 0.9260166666666667and test accuracy as 0. 9222.
-// With a decay of 0.1 we have the training accuracy as 0.9137833333333333 and test accuracy as 0.9145.
-// Finally, with a decay of 1, we have the training accuracy as 0.8931 and test accuracy as 0.8968.
-// The best test accuracy happens when the decay is  0.001, because this is the value for which the model is least likely
+// We used RELU activation for the first 2 layers and a learning rate of 0.1.
+// With the three layers as specified with a decay of 0.0001, we have the training accuracy as 0.9859166666666667 and the test accuracy as 0.9743.
+// With a decay of 0.001 we have training accuracy as 0.98215 and test accuracy as 0.9701.
+// With a decay of 0.01 we have the training accuracy as 0.98405 and test accuracy as 0.9741.
+// With a decay of 0.1 we have the training accuracy as 0.9754666666666667 and test accuracy as 0.9693.
+// Finally, with a decay of 1, we have the training accuracy as 0.92125 and test accuracy as 0.9191.
+// The best test accuracy happens when the decay is 0.01, because this is the value for which the model is least likely
 // to overfit, but still learn properly from the training data.
 
 // 5.3.2.1 How well does your network perform on the CIFAR dataset?
-// TODO
-// We got a training accuracy of 0.39792 and a test accuracy of 0.381 with the following values:
+// We got a training accuracy of 0.4543 and a test accuracy of 0.4399 with the 3 layer model from question 5.2.3.4. and the following values:
 // batch = 128
 // iters = 3000
-// rate = .002
+// rate = 0.01
 // momentum = .9
-// decay = .0
-
-
-
+// decay = 0.1
